@@ -2,8 +2,8 @@ import UIKit
 
 struct GitUser: Codable {
     var id: Int
-    var name: String
-    var company: String
+    var name: String?
+    var company: String?
 }
 
 class ViewController: UIViewController {
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
                 let user = try decoder.decode(GitUser.self, from: data)
                 print(user)
             } catch let jsonError {
-                print("No to dupa", jsonError)
+                print("Error", jsonError)
             }
         }.resume()
     }

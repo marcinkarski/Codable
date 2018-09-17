@@ -1,20 +1,31 @@
-//
-//  ViewController.swift
-//  Codable
-//
-//  Created by Marcin Karski on 15/09/2018.
-//  Copyright © 2018 Marcin Karski. All rights reserved.
-//
-
 import UIKit
+
+struct GitUser: Codable {
+    var id: Int
+    var name: String
+    var company: String
+}
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        fetchDataFromRemote()
     }
-
-
+    
+    func fetchDataFromRemote() {
+        let jsonString = "https://api.github.com/users/marcinkarski"
+        guard let url = URL(string: jsonString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let user = try decoder.decode(GitUser.self, from: data)
+                print(user)
+            } catch let jsonError {
+                print("No to dupa", jsonError)
+            }
+        }.resume()
+    }
 }
-
